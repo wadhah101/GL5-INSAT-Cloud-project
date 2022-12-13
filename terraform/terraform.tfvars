@@ -1,4 +1,4 @@
-client      = "wadhah"
+client      = "w"
 environment = "demo"
 location    = "francecentral"
-stack       = "cproject"
+stack       = "cp"
