@@ -1,4 +1,4 @@
-client      = "qtv"
-environment = "dev"
+client      = "wadhah"
+environment = "demo"
 location    = "francecentral"
-stack       = "subarchive"
+stack       = "cproject"

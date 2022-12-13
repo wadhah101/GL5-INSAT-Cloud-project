@@ -23,3 +23,7 @@ module "rg" {
 
   extra_tags = local.extra_tags
 }
+
+module "policy" {
+  source = "./governance"
+}
