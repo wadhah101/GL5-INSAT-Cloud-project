@@ -6,14 +6,15 @@ terraform {
   }
 }
 
+variable "subscription_id" {
+  type = string
+}
 
-data "azurerm_subscription" "current" {}
-
-resource "azurerm_policy_definition" "example" {
+resource "azurerm_policy_definition" "definition" {
   name         = "allowed-skus-custom"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Allowed resource types"
+  display_name = "Allowed sku types custom"
 
   policy_rule = <<POLICY_RULE
   {
@@ -38,8 +39,8 @@ resource "azurerm_policy_definition" "example" {
 POLICY_RULE
 }
 
-resource "azurerm_subscription_policy_assignment" "example" {
-  name                 = "example"
-  policy_definition_id = azurerm_policy_definition.example.id
-  subscription_id      = data.azurerm_subscription.current.id
+resource "azurerm_subscription_policy_assignment" "assignment" {
+  name                 = "allowed-sku-assignment"
+  policy_definition_id = azurerm_policy_definition.definition.id
+  subscription_id      = var.subscription_id
 }
