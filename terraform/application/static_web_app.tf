@@ -5,3 +5,7 @@ resource "azurerm_static_site" "website" {
   sku_tier            = "Free"
   sku_size            = "Free"
 }
+
+output "apikey" {
+  value = azurerm_static_site.website.api_key
+}

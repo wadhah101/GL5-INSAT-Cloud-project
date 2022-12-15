@@ -22,3 +22,7 @@ variable "resource_group_name" {
   description = "Resource group to deploy to"
   type        = string
 }
+
+# variable "subnet_id" {
+#   type = string
+# }
