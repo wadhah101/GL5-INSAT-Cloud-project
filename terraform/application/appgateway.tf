@@ -109,6 +109,7 @@ module "appgw_v2" {
     ]
   }]
 
+
   appgw_url_path_map = [{
     name                               = "${local.base_name}-example-url-path-map"
     default_backend_http_settings_name = "${local.base_name}-backhttpsettings"

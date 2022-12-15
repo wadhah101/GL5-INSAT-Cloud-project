@@ -23,10 +23,9 @@ data "azurerm_network_watcher" "network_watcher" {
   resource_group_name = "NetworkWatcherRG"
 }
 
-
 module "azure_network_security_group" {
   source  = "claranet/nsg/azurerm"
-  version = "5.2.0"
+  version = "7.3.0"
 
   client_name    = var.client
   environment    = var.environment
@@ -34,8 +33,7 @@ module "azure_network_security_group" {
   location_short = module.azure_region.location_short
   stack          = var.stack
 
-  http_inbound_allowed  = true
-  https_inbound_allowed = true
+  application_gateway_rules_enabled = true
 
   network_watcher_name                = data.azurerm_network_watcher.network_watcher.name
   network_watcher_resource_group_name = data.azurerm_network_watcher.network_watcher.resource_group_name
