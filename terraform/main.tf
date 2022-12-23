@@ -38,3 +38,12 @@ module "application" {
   environment         = var.environment
   resource_group_name = module.rg.resource_group_name
 }
+
+
+output "web_key" {
+  value = module.application.apikey
+}
+
+output "db_fqdn" {
+  value = module.application.vm_ip
+}

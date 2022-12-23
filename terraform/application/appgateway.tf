@@ -31,6 +31,7 @@ module "appgw_v2" {
   appgw_backend_pools = [{
     name  = "${local.base_name}-backendpool"
     fqdns = [azurerm_container_group.container.ip_address]
+
   }]
 
   appgw_routings = [{

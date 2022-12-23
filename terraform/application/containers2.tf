@@ -1,6 +1,6 @@
 
-resource "azurerm_container_group" "container" {
-  name                = module.naming.container_group.name
+resource "azurerm_container_group" "container2" {
+  name                = "${module.naming.container_group.name}-second"
   location            = module.azure_region.location
   resource_group_name = var.resource_group_name
   ip_address_type     = "Private"
@@ -19,20 +19,14 @@ resource "azurerm_container_group" "container" {
 
   container {
 
-    name  = "backend1"
-    image = "mellywins/backend-layer-1:finalthree"
+    name  = "backend2"
+    image = "mellywins/backend-layer-2"
 
     cpu    = 2
     memory = 4
-
     environment_variables = {
-      PORT         = 80
-      DB_HOST      = "c.maindbwadhah.postgres.database.azure.com"
-      DB_PORT      = 5432
-      DB_USERNAME  = "citus"
-      DB_PASSWORD  = "J5xZnK9taHygFZS"
-      DB_DATABASE  = "citus"
-      UPSTREAM_URL = "http://${azurerm_container_group.container2.ip_address}"
+      PORT          = 80
+      DOWNLOAD_PATH = "/mnt/storage"
     }
 
     # readiness_probe {
@@ -69,11 +63,3 @@ resource "azurerm_container_group" "container" {
 #   role_definition_name = "Reader"
 #   principal_id         = azurerm_container_group.container.identity[0].principal_id
 # }
-
-
-output "ip_address_container1" {
-  value = azurerm_container_group.container.ip_address
-}
-
-
-# psql "host=psql-w-frc-demo-appl.postgres.database.azure.com port=5432 dbname=exampledb user=psqladmin@psql-w-frc-demo-appl password=H@Sh1CoR3!"

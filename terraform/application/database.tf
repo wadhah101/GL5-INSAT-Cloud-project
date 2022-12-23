@@ -10,49 +10,36 @@ module "logs" {
   resource_group_name = var.resource_group_name
 }
 
-module "postgresql" {
-  source  = "claranet/db-postgresql/azurerm"
-  version = "6.0.0"
+resource "azurerm_postgresql_server" "server" {
+  name                = module.naming.postgresql_server.name
+  location            = module.azure_region.location
+  resource_group_name = var.resource_group_name
 
-  postgresql_version = "11"
-
-  client_name    = var.client
-  location       = module.azure_region.location
-  location_short = module.azure_region.location_short
-  environment    = var.environment
-  stack          = var.stack
-
-  create_databases_users = false
+  sku_name = "B_Gen5_2"
 
   public_network_access_enabled = true
 
-  resource_group_name = var.resource_group_name
-
-  tier     = "GeneralPurpose"
-  capacity = 2
-
-  allowed_cidrs = {
-    "1" = "10.0.0.0/24"
-  }
-
   storage_mb                   = 5120
-  backup_retention_days        = 10
+  backup_retention_days        = 7
   geo_redundant_backup_enabled = false
-  auto_grow_enabled            = false
-  administrator_login          = "admininsat"
-  administrator_password       = "notsecurepassword123@123"
+  auto_grow_enabled            = true
 
-  force_ssl = true
+  ssl_minimal_tls_version_enforced = "TLSEnforcementDisabled"
 
-  databases_names     = ["maindb"]
-  databases_collation = { mydatabase = "en-US" }
-  databases_charset   = { mydatabase = "UTF8" }
-
-
-  logs_destinations_ids = [
-    module.logs.logs_storage_account_id,
-    module.logs.log_analytics_workspace_id
-  ]
+  administrator_login          = "psqladmin"
+  administrator_login_password = "H@Sh1CoR3!"
+  version                      = "11"
+  ssl_enforcement_enabled      = false
 }
 
+resource "azurerm_postgresql_database" "database" {
+  name                = "exampledb"
+  resource_group_name = var.resource_group_name
+  server_name         = azurerm_postgresql_server.server.name
+  charset             = "UTF8"
+  collation           = "English_United States.1252"
+}
 
+output "vm_ip" {
+  value = azurerm_postgresql_server.server.fqdn
+}
